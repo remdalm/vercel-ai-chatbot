@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+"use client";
 
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -7,13 +7,8 @@ import Script from "next/script";
 
 export const experimental_ppr = true;
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [cookieStore] = await Promise.all([cookies()]);
-  const isCollapsed = cookieStore.get("sidebar:state")?.value !== "true";
+export default function Layout({ children }: { children: React.ReactNode }) {
+  const isCollapsed = localStorage.getItem("sidebar:state") === "true";
 
   return (
     <>
@@ -22,7 +17,7 @@ export default async function Layout({
         strategy="beforeInteractive"
       />
       <SidebarProvider defaultOpen={!isCollapsed}>
-        <AppSidebar user={undefined} />
+        <AppSidebar />
         <SidebarInset>{children}</SidebarInset>
       </SidebarProvider>
     </>
