@@ -1,16 +1,20 @@
-import type { NextConfig } from 'next';
+//const isProd = process.env.NODE_ENV === "production";
 
-const nextConfig: NextConfig = {
-  experimental: {
-    ppr: true,
-  },
+//const internalHost = process.env.TAURI_DEV_HOST || "localhost";
+
+const nextConfig: import("next").NextConfig = {
+  // Ensure Next.js uses SSG instead of SSR
+  // https://nextjs.org/docs/pages/building-your-application/deploying/static-exports
+  output: "export",
+  // Set the distDir to the parent directory of the Next.js app.
+  distDir: "build",
+  // Note: This feature is required to use the Next.js Image component in SSG mode.
+  // See https://nextjs.org/docs/messages/export-image-api for different workarounds.
   images: {
-    remotePatterns: [
-      {
-        hostname: 'avatar.vercel.sh',
-      },
-    ],
+    unoptimized: true,
   },
+  // Configure assetPrefix or else the server won't properly resolve your assets.
+  //assetPrefix: isProd ? undefined : `http://${internalHost}:3000`,
 };
 
 export default nextConfig;
